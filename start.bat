@@ -132,27 +132,56 @@ if /i not "%INSTALL_OLLAMA%"=="Y" (
 )
 
 echo.
+set "OLLAMA_SUCCESS=0"
+
 where winget >nul 2>&1
 if %ERRORLEVEL% equ 0 (
-    echo Installing Ollama via Windows Package Manager...
-    winget install -e --id Ollama.Ollama --accept-package-agreements --accept-source-agreements
-) else (
-    echo Downloading official Ollama installer [OllamaSetup.exe]...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://ollama.com/download/OllamaSetup.exe' -OutFile '%TEMP%\OllamaSetup.exe'"
-    echo Installing Ollama silently...
-    start /wait "" "%TEMP%\OllamaSetup.exe" /SILENT
-    del "%TEMP%\OllamaSetup.exe" >nul 2>&1
+    echo Installing Ollama via Windows Package Manager [source: winget]...
+    winget install -e --id Ollama.Ollama --source winget --accept-package-agreements --accept-source-agreements
+    if %ERRORLEVEL% equ 0 set "OLLAMA_SUCCESS=1"
 )
 
-:: Update PATH with Ollama install location
+:: If winget failed or is missing, download official OllamaSetup.exe directly
+where ollama >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    if not exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
+        echo Downloading official Ollama installer [OllamaSetup.exe]...
+        where curl.exe >nul 2>&1
+        if !ERRORLEVEL! equ 0 (
+            curl.exe -L -o "%TEMP%\OllamaSetup.exe" "https://ollama.com/download/OllamaSetup.exe"
+        ) else (
+            powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object Net.WebClient).DownloadFile('https://ollama.com/download/OllamaSetup.exe', '$env:TEMP\OllamaSetup.exe')"
+        )
+        if exist "%TEMP%\OllamaSetup.exe" (
+            echo Running Ollama installer...
+            start /wait "" "%TEMP%\OllamaSetup.exe" /SILENT
+            del "%TEMP%\OllamaSetup.exe" >nul 2>&1
+        )
+    )
+)
+
+:: Update PATH with default Ollama location
 if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
     set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
 )
 
+:: Verify if Ollama is now available
 where ollama >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo [WARNING] Ollama installation finished. If models fail to pull, please restart start.bat.
+if %ERRORLEVEL% equ 0 goto :ollama_found
+
+if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
+    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
+    goto :ollama_found
 )
+
+:: If still not installed, do NOT run ollama commands
+echo.
+echo [NOTICE] Automatic Ollama installation did not complete.
+echo Doraemon will proceed using Fast Classical OCR and QR detection.
+echo To enable local AI Vision models later, download Ollama from:
+echo https://ollama.com/download/OllamaSetup.exe
+echo.
+goto :launch_scanner
 
 :ollama_found
 echo   - Ollama is ready.
