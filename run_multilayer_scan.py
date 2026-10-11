@@ -9,8 +9,8 @@ def main():
     parser.add_argument(
         "--input", 
         type=str, 
-        default=r"c:\Users\rayne\Downloads\Diploma in Data Science.pdf",
-        help="Path to certificate PDF or image file"
+        default=None,
+        help="Path to certificate PDF or image file (prompts if omitted)"
     )
     parser.add_argument(
         "--qr-out", 
@@ -43,9 +43,17 @@ def main():
 
     args = parser.parse_args()
 
+    input_path = args.input
+    if not input_path:
+        input_path = input("Enter certificate file path (or drag & drop file here): ").strip().strip('"').strip("'")
+
+    if not input_path or not os.path.exists(input_path):
+        print(f"Error: Certificate file not found at '{input_path}'")
+        return
+
     print("=" * 65)
     print("DORAEMON MULTI-LAYER CERTIFICATE EXTRACTION ENGINE")
-    print(f"Input file       : {args.input}")
+    print(f"Input file       : {input_path}")
     print(f"QR crop out      : {args.qr_out}")
     print(f"VLM Token Dim    : {args.dim}px")
     print(f"Secondary VLM    : {'Enabled (MiniCPM-V)' if args.use_secondary else 'Disabled'}")
@@ -54,7 +62,7 @@ def main():
 
     extractor = MultiLayerCertificateExtractor(max_vlm_dim=args.dim)
     result = extractor.extract(
-        file_path=args.input,
+        file_path=input_path,
         output_qr_crop_path=args.qr_out,
         use_secondary_vlm=args.use_secondary,
         force_vlm=args.force_vlm

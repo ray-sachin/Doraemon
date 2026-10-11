@@ -9,8 +9,8 @@ def main():
     parser.add_argument(
         "--input", 
         type=str, 
-        default=r"c:\Users\rayne\Downloads\certificate_soil.pdf",
-        help="Path to certificate PDF or image file"
+        default=None,
+        help="Path to certificate PDF or image file (prompts if omitted)"
     )
     parser.add_argument(
         "--qr-out", 
@@ -32,14 +32,22 @@ def main():
 
     args = parser.parse_args()
 
+    input_path = args.input
+    if not input_path:
+        input_path = input("Enter certificate file path (or drag & drop file here): ").strip().strip('"').strip("'")
+
+    if not input_path or not os.path.exists(input_path):
+        print(f"Error: Certificate file not found at '{input_path}'")
+        return
+
     print("=" * 60)
     print("DORAEMON CERTIFICATE EXTRACTION ENGINE")
-    print(f"Input file : {args.input}")
+    print(f"Input file : {input_path}")
     print(f"QR crop out: {args.qr_out}")
     print("=" * 60)
 
     extractor = CertificateExtractor(use_gpu=args.gpu)
-    result = extractor.extract(args.input, output_qr_crop_path=args.qr_out)
+    result = extractor.extract(input_path, output_qr_crop_path=args.qr_out)
 
     # Save output JSON
     os.makedirs(os.path.dirname(os.path.abspath(args.json_out)), exist_ok=True)

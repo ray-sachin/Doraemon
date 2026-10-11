@@ -136,7 +136,22 @@ The output strictly produces the following 9 target fields:
 
 ---
 
-## Installation & Setup
+---
+
+## Quickstart (One-Click)
+
+If you are on Windows, you do not need to manually configure Python environments or download packages:
+1. Double-click **`start.bat`**.
+2. The launcher will automatically:
+   - Check if Python is installed (and offer to install Python 3.11 if missing).
+   - Create an isolated virtual environment (`.venv`).
+   - Prompt you to install required dependencies (`requirements.txt`).
+   - Check if Ollama and the local vision model (`qwen2.5vl:3b`) are present (and offer to download them).
+   - Launch an interactive menu where you can simply **drag and drop** your certificate to extract fields immediately!
+
+---
+
+## Manual Installation & Setup
 
 ### 1. Clone the Repository
 ```bash
@@ -146,6 +161,12 @@ cd Doraemon
 
 ### 2. Install Python Dependencies
 ```bash
+python -m venv .venv
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
