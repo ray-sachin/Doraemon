@@ -110,19 +110,59 @@ if %ERRORLEVEL% neq 0 (
 :: ---------------------------------------------------------------------
 echo.
 echo [3/3] Checking Ollama local AI runtime...
+
+:: Check if in PATH or default install location
 where ollama >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo   - Ollama is not installed. Classical OCR and QR extraction will run normally.
+if %ERRORLEVEL% equ 0 goto :ollama_found
+
+if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
+    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
+    goto :ollama_found
+)
+
+:: Ollama is not installed
+echo.
+echo [NOTICE] Ollama is not detected on this system.
+echo Ollama is required to run local AI Vision models [Qwen2.5-VL and MiniCPM-V].
+echo.
+set /p "INSTALL_OLLAMA=Do you want to automatically download and install Ollama now? [Y/N]: "
+if /i not "%INSTALL_OLLAMA%"=="Y" (
+    echo [NOTICE] Skipping Ollama. Doraemon will use fast classical OCR instead.
     goto :launch_scanner
 )
 
-echo   - Ollama detected.
+echo.
+where winget >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo Installing Ollama via Windows Package Manager...
+    winget install -e --id Ollama.Ollama --accept-package-agreements --accept-source-agreements
+) else (
+    echo Downloading official Ollama installer [OllamaSetup.exe]...
+    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://ollama.com/download/OllamaSetup.exe' -OutFile '%TEMP%\OllamaSetup.exe'"
+    echo Installing Ollama silently...
+    start /wait "" "%TEMP%\OllamaSetup.exe" /SILENT
+    del "%TEMP%\OllamaSetup.exe" >nul 2>&1
+)
+
+:: Update PATH with Ollama install location
+if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
+    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
+)
+
+where ollama >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [WARNING] Ollama installation finished. If models fail to pull, please restart start.bat.
+)
+
+:ollama_found
+echo   - Ollama is ready.
+
 :: Start background service if not responding
 curl -s http://localhost:11434/api/tags >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo   - Starting local Ollama background service...
     start /B "" ollama serve >nul 2>&1
-    timeout /t 2 /nobreak >nul
+    timeout /t 3 /nobreak >nul
 )
 
 :: Check Primary Model: qwen2.5vl:3b
