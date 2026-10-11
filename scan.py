@@ -3,17 +3,19 @@ import sys
 import json
 import requests
 
-def print_header(ollama_online: bool, model_ready: bool):
+def print_header(ollama_online: bool, has_qwen: bool, has_minicpm: bool):
     print("\n" + "=" * 65)
     print("                 DORAEMON CERTIFICATE SCANNER")
     print("  Offline Multi-Layer Visual Extraction Engine by Sachin Ray")
     print("=" * 65)
     print("System Status:")
     print("  - Neural OCR (EasyOCR / OpenCV)  : Ready")
-    if ollama_online and model_ready:
+    if ollama_online and has_qwen and has_minicpm:
+        print("  - Local AI Vision (Qwen + MiniCPM): Ready (Dual-VLM Consensus Online)")
+    elif ollama_online and has_qwen:
         print("  - Local AI Vision (Qwen2.5-VL)   : Ready (Ollama Online)")
     elif ollama_online:
-        print("  - Local AI Vision (Qwen2.5-VL)   : Model not pulled (Running Classical OCR)")
+        print("  - Local AI Vision (Ollama)       : Models not downloaded (Running Classical OCR)")
     else:
         print("  - Local AI Vision (Ollama)       : Offline (Running Classical OCR)")
     print("=" * 65)
@@ -24,10 +26,11 @@ def check_ollama_status():
         if r.status_code == 200:
             models = [m.get("name", "").lower() for m in r.json().get("models", [])]
             has_qwen = any("qwen2.5vl" in m for m in models)
-            return True, has_qwen
+            has_minicpm = any("minicpm-v" in m for m in models)
+            return True, has_qwen, has_minicpm
     except Exception:
         pass
-    return False, False
+    return False, False, False
 
 def clean_input_path(raw: str) -> str:
     if not raw:
@@ -102,10 +105,10 @@ def scan_certificate(file_path: str, use_vlm: bool):
         print("QR code          : None detected on this certificate")
 
 def main():
-    ollama_online, qwen_ready = check_ollama_status()
-    use_vlm = ollama_online and qwen_ready
+    ollama_online, has_qwen, has_minicpm = check_ollama_status()
+    use_vlm = ollama_online and (has_qwen or has_minicpm)
 
-    print_header(ollama_online, qwen_ready)
+    print_header(ollama_online, has_qwen, has_minicpm)
 
     while True:
         file_path = prompt_for_file()

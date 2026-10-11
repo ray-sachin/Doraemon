@@ -127,14 +127,27 @@ if %ERRORLEVEL% neq 0 (
     :: Check if qwen2.5vl:3b is available
     ollama list 2>nul | findstr /i "qwen2.5vl" >nul 2>&1
     if !ERRORLEVEL! neq 0 (
-        echo   - Model 'qwen2.5vl:3b' is not yet downloaded.
-        set /p "PULL_QWEN=Do you want to download qwen2.5vl:3b (~3.2 GB) for AI vision extraction? (Y/N): "
+        echo   - Primary model 'qwen2.5vl:3b' is not yet downloaded.
+        set /p "PULL_QWEN=Do you want to download qwen2.5vl:3b (~3.2 GB)? (Y/N): "
         if /i "!PULL_QWEN!"=="Y" (
             echo Downloading qwen2.5vl:3b via Ollama...
             ollama pull qwen2.5vl:3b
         )
     ) else (
-        echo   - Local vision model (qwen2.5vl:3b) is downloaded and ready.
+        echo   - Primary vision model (qwen2.5vl:3b) is downloaded and ready.
+    )
+
+    :: Check if minicpm-v is available
+    ollama list 2>nul | findstr /i "minicpm-v" >nul 2>&1
+    if !ERRORLEVEL! neq 0 (
+        echo   - Secondary model 'minicpm-v' is not yet downloaded.
+        set /p "PULL_MINI=Do you want to download minicpm-v (~5.5 GB) for dual-VLM consensus? (Y/N): "
+        if /i "!PULL_MINI!"=="Y" (
+            echo Downloading minicpm-v via Ollama...
+            ollama pull minicpm-v
+        )
+    ) else (
+        echo   - Secondary vision model (minicpm-v) is downloaded and ready.
     )
 )
 

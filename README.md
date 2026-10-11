@@ -88,7 +88,7 @@ Extracting structured data from certificates is surprisingly tricky in the real 
    - If any core entity confidence drops below 0.85 or is flagged as ungrounded, the engine automatically engages `minicpm-v` as a secondary tie-breaker arbitrator.
 
 5. **Cross-Stream Stroke Disambiguation**:
-   - In cursive handwriting, optical ambiguities like `BT24` vs `RT24` are resolved by cross-checking OCR character tokens against academic context (e.g., verifying `B.Tech` degree prefix).
+   - In cursive or slanted handwriting, optical character ambiguities are resolved by cross-checking neural OCR character tokens against document layout context.
    - Pre-printed form boilerplate (`Mr./Ms.`, `Mr./Mrs.`) is stripped so only the clean recipient name is retained.
 
 6. **100% Offline & Private**:
@@ -102,32 +102,33 @@ The output strictly produces the following 9 target fields:
 
 ```json
 {
-  "recipientName": "Sachin Kumar Ray",
-  "certificateID": "NITUK/Acad./1536",
+  "recipientName": "Sachin Ray",
+  "certificateID": null,
   "certificateTitle": "CERTIFICATE",
-  "courseName": "B.Tech",
-  "institutionName": "National Institute of Technology, Uttarakhand",
-  "issuerName": "Dean (Academic Affairs)",
-  "certificateDescription": "This is to certify that Mr./Mrs. Sachin Kumar Ray, Shri Dharmendra Kumar Ray, Roll No. BT24CSE001 is a Bonafide Student of B.Tech programme 2024-28 year (Department of Computer Science and Engineering, Course Duration 4 years) at National Institute of Technology, Uttarakhand. He/She resides in Bhagjanki Hostel of the Institute, located at its campus in Srinagar Garhwal, Uttarakhand.",
-  "completionDate": "07/02/2025",
+  "courseName": "Adventure and Community Service's Club",
+  "institutionName": "National Institute of Technology Uttarakhand",
+  "issuerName": "Dr. Kuldeep Singh",
+  "certificateDescription": "for his hard work and active participation in the Adventure and Community Service's Club as Associate Member for the session 2024-25.",
+  "completionDate": null,
   "qrImage": null,
   "_metadata": {
-    "total_latency_seconds": 52.398,
-    "models_engaged": ["qwen2.5vl:3b"],
+    "total_latency_seconds": 80.941,
+    "stream_ocr_duration": 10.85,
+    "stream_vlm_duration": 28.244,
+    "token_budget_dim": 1024,
+    "models_engaged": [
+      "qwen2.5vl:3b",
+      "minicpm-v"
+    ],
     "audit": {
       "confidences": {
         "recipientName": 0.98,
-        "certificateID": 0.95,
+        "certificateID": 0.0,
         "certificateTitle": 0.92,
         "courseName": 0.92,
-        "institutionName": 0.92,
-        "issuerName": 0.92,
-        "certificateDescription": 0.92,
-        "completionDate": 0.95
-      },
-      "provenance": {
-        "recipientName": "VLM_Grounded",
-        "certificateID": "VLM_qwen2.5vl:3b"
+        "institutionName": 0.99,
+        "issuerName": 0.99,
+        "certificateDescription": 0.99
       }
     }
   }
@@ -146,8 +147,8 @@ If you are on Windows, you do not need to manually configure Python environments
    - Check if Python is installed (and offer to install Python 3.11 if missing).
    - Create an isolated virtual environment (`.venv`).
    - Prompt you to install required dependencies (`requirements.txt`).
-   - Check if Ollama and the local vision model (`qwen2.5vl:3b`) are present (and offer to download them).
-   - Launch an interactive menu where you can simply **drag and drop** your certificate to extract fields immediately!
+   - Check if Ollama and both local vision models (`qwen2.5vl:3b` and `minicpm-v:latest`) are present (and offer to download them).
+   - Launch the scanner where you can simply **paste the path or drag and drop** your certificate to extract fields immediately!
 
 ---
 
