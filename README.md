@@ -214,6 +214,14 @@ uvicorn src.api:app --host 0.0.0.0 --port 8000 --reload
 ```
 API endpoint: `POST http://localhost:8000/extract-certificate`
 
+### 5. Cleanup & Uninstallation
+To remove temporary files, clean `.venv`, or reclaim ~9 GB of disk space from downloaded AI models:
+```bash
+# Double-click or run from terminal:
+cleanup.bat
+# (or uninstall.bat)
+```
+
 ---
 
 ## Project Structure
@@ -227,6 +235,10 @@ Doraemon/
 |   |-- certificate_extractor.py  # Classical CV + OCR extraction engine
 |   |-- dataset_manager.py        # Dataset generation & catalog manager
 |   `-- vlm_multi_layer_extractor.py # Multi-layer VLM + OCR extraction engine
+|-- start.bat                     # One-click Windows launcher & auto-installer
+|-- cleanup.bat                   # Safe cleanup & uninstallation tool
+|-- uninstall.bat                 # Uninstaller alias
+|-- scan.py                       # Interactive drag-and-drop scanner
 |-- run_benchmark.py              # Benchmark evaluation script
 |-- run_certificate_scan.py       # High-speed OCR CLI runner
 |-- run_multilayer_scan.py        # Multi-layer VLM + OCR CLI runner
