@@ -1,0 +1,14 @@
+# Doraemon Core Dependencies
+numpy>=1.24.0
+opencv-python>=4.8.0
+pillow>=10.0.0
+pypdfium2>=4.20.0
+easyocr>=1.7.0
+rapidfuzz>=3.0.0
+requests>=2.31.0
+fastapi>=0.100.0
+uvicorn>=0.22.0
+
+# Optional / Benchmark dependencies
+reportlab>=4.0.0
+qrcode>=7.4.0

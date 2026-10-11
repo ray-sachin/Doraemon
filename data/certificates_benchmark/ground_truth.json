@@ -1,0 +1,290 @@
+[
+  {
+    "id": "certificate_soil",
+    "file_path": "c:\\Users\\rayne\\Downloads\\certificate_soil.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Vinay Kumar",
+      "certificateID": "BDE702D9-BD68-48E9-86F",
+      "issuerName": "Ram Lal Yadav",
+      "institutionName": "Institute of Indian Civil Structures",
+      "certificateTitle": "CERTIFICATE OF COMPLETION",
+      "courseName": "Soil Analysis",
+      "certificateDescription": "outstanding dedication and successful completion of the prestigious program",
+      "completionDate": "October 8, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "certificate_quiz_mybharat",
+    "file_path": "c:\\Users\\rayne\\Downloads\\certificate.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "SACHIN RAY",
+      "certificateID": null,
+      "issuerName": null,
+      "institutionName": "Ministry of Youth Affairs & Sports",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "Viksit Bharat Young Leaders Dialogue (VBYLD) 2026",
+      "certificateDescription": "for successfully participating in the Online Quiz on",
+      "completionDate": "04 October 2025",
+      "has_qr": false
+    }
+  },
+  {
+    "id": "synth_certificate_01_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_01.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Emily Watson",
+      "certificateID": "CERT-5F52-BEE8-39E2",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "STANFORD ARTIFICIAL INTELLIGENCE LAB",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "GEOTECHNICAL FOUNDATION ENGINEERING",
+      "certificateDescription": "for outstanding dedication and successful completion of the prestigious program",
+      "completionDate": "March 28, 2025",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_01_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_01.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Emily Watson",
+      "certificateID": "CERT-5F52-BEE8-39E2",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "STANFORD ARTIFICIAL INTELLIGENCE LAB",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "GEOTECHNICAL FOUNDATION ENGINEERING",
+      "certificateDescription": "for outstanding dedication and successful completion of the prestigious program",
+      "completionDate": "March 28, 2025",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_02_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_02.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-69D2-E4B6-FF6D",
+      "issuerName": "Vikram Singhania",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "DEEP LEARNING AND COMPUTER VISION",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "October 8, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_02_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_02.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-69D2-E4B6-FF6D",
+      "issuerName": "Vikram Singhania",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "DEEP LEARNING AND COMPUTER VISION",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "October 8, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_03_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_03.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-CA1A-C1A3-DD75",
+      "issuerName": "Ram Lal Yadav",
+      "institutionName": "INDIAN INSTITUTE OF TECHNOLOGY ROORKEE",
+      "certificateTitle": "CERTIFICATE OF APPRECIATION",
+      "courseName": "DEEP LEARNING AND COMPUTER VISION",
+      "certificateDescription": "for outstanding dedication and successful completion of the prestigious program",
+      "completionDate": "August 14, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_03_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_03.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-CA1A-C1A3-DD75",
+      "issuerName": "Ram Lal Yadav",
+      "institutionName": "INDIAN INSTITUTE OF TECHNOLOGY ROORKEE",
+      "certificateTitle": "CERTIFICATE OF APPRECIATION",
+      "courseName": "DEEP LEARNING AND COMPUTER VISION",
+      "certificateDescription": "for outstanding dedication and successful completion of the prestigious program",
+      "completionDate": "August 14, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_04_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_04.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Aarav Sharma",
+      "certificateID": "CERT-F9D0-F8B8-646B",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "VIKSIT BHARAT YOUNG LEADERS DIALOGUE",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "January 12, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_04_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_04.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Aarav Sharma",
+      "certificateID": "CERT-F9D0-F8B8-646B",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "VIKSIT BHARAT YOUNG LEADERS DIALOGUE",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "January 12, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_05_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_05.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Priya Patel",
+      "certificateID": "CERT-BD9B-8C54-A9CA",
+      "issuerName": "Dr. Pradumn Kumar Pandey",
+      "institutionName": "GLOBAL DATA SCIENCE ACADEMY",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "SOIL ANALYSIS",
+      "certificateDescription": "for active participation and successful contribution to the specialized workshop",
+      "completionDate": "November 15, 2025",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_05_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_05.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Priya Patel",
+      "certificateID": "CERT-BD9B-8C54-A9CA",
+      "issuerName": "Dr. Pradumn Kumar Pandey",
+      "institutionName": "GLOBAL DATA SCIENCE ACADEMY",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "SOIL ANALYSIS",
+      "certificateDescription": "for active participation and successful contribution to the specialized workshop",
+      "completionDate": "November 15, 2025",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_06_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_06.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-8642-21AC-9466",
+      "issuerName": "Vikram Singhania",
+      "institutionName": "NATIONAL INSTITUTE OF TECHNOLOGY UTTARAKHAND",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "SOIL ANALYSIS",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "January 12, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_06_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_06.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-8642-21AC-9466",
+      "issuerName": "Vikram Singhania",
+      "institutionName": "NATIONAL INSTITUTE OF TECHNOLOGY UTTARAKHAND",
+      "certificateTitle": "CERTIFICATE OF PARTICIPATION",
+      "courseName": "SOIL ANALYSIS",
+      "certificateDescription": "for demonstrating remarkable excellence and fulfilling all course requirements",
+      "completionDate": "January 12, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_07_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_07.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Ananya Deshmukh",
+      "certificateID": "CERT-8DE9-8F25-8CE8",
+      "issuerName": "Dr. Rajesh Sengupta",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF ACHIEVEMENT",
+      "courseName": "NEXTGEN PATHWAYS IN VLSI SYSTEMS",
+      "certificateDescription": "in recognition of outstanding academic performance and dedicated project submission",
+      "completionDate": "October 8, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_07_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_07.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Ananya Deshmukh",
+      "certificateID": "CERT-8DE9-8F25-8CE8",
+      "issuerName": "Dr. Rajesh Sengupta",
+      "institutionName": "HARVARD EXTENSION SCHOOL",
+      "certificateTitle": "CERTIFICATE OF ACHIEVEMENT",
+      "courseName": "NEXTGEN PATHWAYS IN VLSI SYSTEMS",
+      "certificateDescription": "in recognition of outstanding academic performance and dedicated project submission",
+      "completionDate": "October 8, 2026",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_08_png",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_08.png",
+    "type": "image",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-EDE9-4D05-270A",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "NATIONAL INSTITUTE OF TECHNOLOGY UTTARAKHAND",
+      "certificateTitle": "CERTIFICATE OF EXCELLENCE",
+      "courseName": "CLOUD DEVOPS AND KUBERNETES",
+      "certificateDescription": "in recognition of outstanding academic performance and dedicated project submission",
+      "completionDate": "December 20, 2024",
+      "has_qr": true
+    }
+  },
+  {
+    "id": "synth_certificate_08_pdf",
+    "file_path": "C:\\Users\\rayne\\Downloads\\Doraemon\\data\\certificates_benchmark\\synthetic\\synth_certificate_08.pdf",
+    "type": "pdf",
+    "ground_truth": {
+      "recipientName": "Sachin Ray",
+      "certificateID": "CERT-EDE9-4D05-270A",
+      "issuerName": "Prof. Katherine Miller",
+      "institutionName": "NATIONAL INSTITUTE OF TECHNOLOGY UTTARAKHAND",
+      "certificateTitle": "CERTIFICATE OF EXCELLENCE",
+      "courseName": "CLOUD DEVOPS AND KUBERNETES",
+      "certificateDescription": "in recognition of outstanding academic performance and dedicated project submission",
+      "completionDate": "December 20, 2024",
+      "has_qr": true
+    }
+  }
+]
