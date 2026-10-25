@@ -15,7 +15,7 @@ echo.
 :: ---------------------------------------------------------------------
 :: 1. Check Python Environment
 :: ---------------------------------------------------------------------
-echo [1/3] Checking Python environment...
+echo [1/2] Checking Python environment...
 set "PY_CMD="
 
 python --version >nul 2>&1
@@ -69,21 +69,21 @@ for /f "tokens=*" %%v in ('%PY_CMD% --version') do echo   - Found %%v
 :: 2. Check Python Dependencies
 :: ---------------------------------------------------------------------
 echo.
-echo [2/3] Verifying required libraries...
-%PY_CMD% -c "import cv2, easyocr, requests, rapidfuzz, pypdfium2" >nul 2>&1
+echo [2/2] Verifying required libraries...
+%PY_CMD% -c "import cv2, easyocr, rapidfuzz, pypdfium2" >nul 2>&1
 if %ERRORLEVEL% equ 0 (
     echo   - Core dependencies are installed and ready.
-    goto :ollama_check
+    goto :launch_scanner
 )
 
 :: Check if virtual environment exists with dependencies
 if exist ".venv\Scripts\activate.bat" (
     call .venv\Scripts\activate.bat
-    python -c "import cv2, easyocr, requests, rapidfuzz, pypdfium2" >nul 2>&1
+    python -c "import cv2, easyocr, rapidfuzz, pypdfium2" >nul 2>&1
     if !ERRORLEVEL! equ 0 (
         set "PY_CMD=python"
         echo   - Virtual environment libraries ready.
-        goto :ollama_check
+        goto :launch_scanner
     )
 )
 
@@ -92,7 +92,7 @@ echo [NOTICE] Some required libraries are missing.
 set /p "INSTALL_PKGS=Do you want to install dependencies from requirements.txt now? [Y/N]: "
 if /i not "%INSTALL_PKGS%"=="Y" (
     echo [NOTICE] Skipping package installation. Some features may not work.
-    goto :ollama_check
+    goto :launch_scanner
 )
 
 echo Upgrading pip...
@@ -104,125 +104,9 @@ if %ERRORLEVEL% neq 0 (
     echo [WARNING] Some dependencies failed to install.
 )
 
-:ollama_check
-:: ---------------------------------------------------------------------
-:: 3. Verify Ollama and Local Vision Models
-:: ---------------------------------------------------------------------
-echo.
-echo [3/3] Checking Ollama local AI runtime...
-
-:: Check if in PATH or default install location
-where ollama >nul 2>&1
-if %ERRORLEVEL% equ 0 goto :ollama_found
-
-if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
-    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
-    goto :ollama_found
-)
-
-:: Ollama is not installed
-echo.
-echo [NOTICE] Ollama is not detected on this system.
-echo Ollama is required to run local AI Vision models [Qwen2.5-VL and MiniCPM-V].
-echo.
-set /p "INSTALL_OLLAMA=Do you want to automatically download and install Ollama now? [Y/N]: "
-if /i not "%INSTALL_OLLAMA%"=="Y" (
-    echo [NOTICE] Skipping Ollama. Doraemon will use fast classical OCR instead.
-    goto :launch_scanner
-)
-
-echo.
-set "OLLAMA_SUCCESS=0"
-
-where winget >nul 2>&1
-if %ERRORLEVEL% equ 0 (
-    echo Installing Ollama via Windows Package Manager [source: winget]...
-    winget install -e --id Ollama.Ollama --source winget --accept-package-agreements --accept-source-agreements
-    if %ERRORLEVEL% equ 0 set "OLLAMA_SUCCESS=1"
-)
-
-:: If winget failed or is missing, download official OllamaSetup.exe directly
-where ollama >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    if not exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
-        echo Downloading official Ollama installer [OllamaSetup.exe]...
-        where curl.exe >nul 2>&1
-        if !ERRORLEVEL! equ 0 (
-            curl.exe -L -o "%TEMP%\OllamaSetup.exe" "https://ollama.com/download/OllamaSetup.exe"
-        ) else (
-            powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object Net.WebClient).DownloadFile('https://ollama.com/download/OllamaSetup.exe', '$env:TEMP\OllamaSetup.exe')"
-        )
-        if exist "%TEMP%\OllamaSetup.exe" (
-            echo Running Ollama installer...
-            start /wait "" "%TEMP%\OllamaSetup.exe" /SILENT
-            del "%TEMP%\OllamaSetup.exe" >nul 2>&1
-        )
-    )
-)
-
-:: Update PATH with default Ollama location
-if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
-    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
-)
-
-:: Verify if Ollama is now available
-where ollama >nul 2>&1
-if %ERRORLEVEL% equ 0 goto :ollama_found
-
-if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
-    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
-    goto :ollama_found
-)
-
-:: If still not installed, do NOT run ollama commands
-echo.
-echo [NOTICE] Automatic Ollama installation did not complete.
-echo Doraemon will proceed using Fast Classical OCR and QR detection.
-echo To enable local AI Vision models later, download Ollama from:
-echo https://ollama.com/download/OllamaSetup.exe
-echo.
-goto :launch_scanner
-
-:ollama_found
-echo   - Ollama is ready.
-
-:: Start background service if not responding
-curl -s http://localhost:11434/api/tags >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo   - Starting local Ollama background service...
-    start /B "" ollama serve >nul 2>&1
-    timeout /t 3 /nobreak >nul
-)
-
-:: Check Primary Model: qwen2.5vl:3b
-ollama list 2>nul | findstr /i "qwen2.5vl" >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo   - Primary model qwen2.5vl:3b is not yet downloaded.
-    set /p "PULL_QWEN=Do you want to download qwen2.5vl:3b [approx 3.2 GB]? [Y/N]: "
-    if /i "!PULL_QWEN!"=="Y" (
-        echo Downloading qwen2.5vl:3b...
-        ollama pull qwen2.5vl:3b
-    )
-) else (
-    echo   - Primary vision model qwen2.5vl:3b is ready.
-)
-
-:: Check Secondary Model: minicpm-v
-ollama list 2>nul | findstr /i "minicpm-v" >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo   - Secondary model minicpm-v is not yet downloaded.
-    set /p "PULL_MINI=Do you want to download minicpm-v [approx 5.5 GB]? [Y/N]: "
-    if /i "!PULL_MINI!"=="Y" (
-        echo Downloading minicpm-v...
-        ollama pull minicpm-v
-    )
-) else (
-    echo   - Secondary vision model minicpm-v is ready.
-)
-
 :launch_scanner
 :: ---------------------------------------------------------------------
-:: 4. Launch Doraemon Scanner
+:: 3. Launch Doraemon Scanner
 :: ---------------------------------------------------------------------
 echo.
 echo ===================================================================

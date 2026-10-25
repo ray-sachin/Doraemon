@@ -3,26 +3,23 @@ import sys
 import json
 import requests
 
-def print_header(ollama_online: bool, has_qwen: bool, has_minicpm: bool):
+def print_header(use_gpu: bool = False, use_vlm: bool = False):
     print("\n" + "=" * 65)
     print("                 DORAEMON CERTIFICATE SCANNER")
-    print("  Offline Multi-Layer Visual Extraction Engine by Sachin Ray")
+    print("        High-Speed Neural OCR Engine by Sachin Ray")
     print("=" * 65)
     print("System Status:")
-    print("  - Neural OCR (EasyOCR / OpenCV)  : Ready")
-    if ollama_online and has_qwen and has_minicpm:
-        print("  - Local AI Vision (Qwen + MiniCPM): Ready (Dual-VLM Consensus Online)")
-    elif ollama_online and has_qwen:
-        print("  - Local AI Vision (Qwen2.5-VL)   : Ready (Ollama Online)")
-    elif ollama_online:
-        print("  - Local AI Vision (Ollama)       : Models not downloaded (Running Classical OCR)")
+    print("  - Engine       : Neural OCR (EasyOCR + OpenCV Document Engine)")
+    if use_vlm:
+        print("  - Mode         : Multi-Layer VLM Consensus (Ollama)")
     else:
-        print("  - Local AI Vision (Ollama)       : Offline (Running Classical OCR)")
+        print("  - Mode         : Pure Neural OCR (Zero LLM / High-Speed Bulk Ready)")
+    print(f"  - Acceleration : {'GPU (CUDA)' if use_gpu else 'CPU'}")
     print("=" * 65)
 
 def check_ollama_status():
     try:
-        r = requests.get("http://localhost:11434/api/tags", timeout=2)
+        r = requests.get("http://localhost:11434/api/tags", timeout=1)
         if r.status_code == 200:
             models = [m.get("name", "").lower() for m in r.json().get("models", [])]
             has_qwen = any("qwen2.5vl" in m for m in models)
@@ -71,7 +68,7 @@ def prompt_for_file():
         print("  3. Make sure the file exists and is not open in another locking application.")
         print("-" * 65)
 
-def scan_certificate(file_path: str, use_vlm: bool):
+def scan_certificate(file_path: str, use_vlm: bool = False, use_gpu: bool = False):
     os.makedirs("output", exist_ok=True)
     qr_crop_path = os.path.join("output", "qr_scan.png")
     out_json_path = os.path.join("output", "extracted_result.json")
@@ -85,7 +82,7 @@ def scan_certificate(file_path: str, use_vlm: bool):
         result = extractor.extract(file_path, output_qr_crop_path=qr_crop_path)
     else:
         from src.certificate_extractor import CertificateExtractor
-        extractor = CertificateExtractor()
+        extractor = CertificateExtractor(use_gpu=use_gpu)
         result = extractor.extract(file_path, output_qr_crop_path=qr_crop_path)
 
     # Save output JSON
@@ -105,10 +102,23 @@ def scan_certificate(file_path: str, use_vlm: bool):
         print("QR code          : None detected on this certificate")
 
 def main():
-    ollama_online, has_qwen, has_minicpm = check_ollama_status()
-    use_vlm = ollama_online and (has_qwen or has_minicpm)
+    import argparse
+    parser = argparse.ArgumentParser(description="Doraemon High-Speed Certificate Scanner")
+    parser.add_argument("--vlm", action="store_true", help="Enable multi-layer VLM consensus mode via Ollama")
+    parser.add_argument("--gpu", action="store_true", help="Enable GPU acceleration")
+    parser.add_argument("--file", type=str, default=None, help="Direct certificate file path")
+    args, _ = parser.parse_known_args()
 
-    print_header(ollama_online, has_qwen, has_minicpm)
+    use_vlm = args.vlm
+    use_gpu = args.gpu
+
+    print_header(use_gpu=use_gpu, use_vlm=use_vlm)
+
+    if args.file:
+        file_path = clean_input_path(args.file)
+        if os.path.isfile(file_path):
+            scan_certificate(file_path, use_vlm=use_vlm, use_gpu=use_gpu)
+            return
 
     while True:
         file_path = prompt_for_file()
@@ -117,7 +127,7 @@ def main():
             break
 
         try:
-            scan_certificate(file_path, use_vlm=use_vlm)
+            scan_certificate(file_path, use_vlm=use_vlm, use_gpu=use_gpu)
         except Exception as e:
             print(f"\n[!] Extraction error: {e}")
             print("Please verify the file is a readable PDF or image.")

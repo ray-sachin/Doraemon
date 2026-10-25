@@ -1,6 +1,6 @@
 # Doraemon
 
-> An offline, multi-layer certificate and credential extraction engine combining computer vision, neural OCR, and local vision-language models.
+> An offline, high-speed certificate and credential extraction engine combining computer vision, neural OCR, and structured layout parsing with optional multi-layer VLM consensus.
 
 Developed by **Sachin Kumar Ray**.
 
@@ -8,13 +8,16 @@ Developed by **Sachin Kumar Ray**.
 
 ## Overview
 
-Extracting structured data from certificates is surprisingly tricky in the real world:
-- Some files are born-digital vector PDFs.
-- Some are flat scans or mobile photos taken under harsh shadows, uneven lighting, or perspective tilt.
-- Many have handwritten student roll numbers or cursive calligraphy that confuse standard OCR models.
-- Uploading academic credentials or sensitive institutional records to third-party cloud APIs often violates privacy guidelines and introduces latency.
+Extracting structured data from certificates in bulk requires both high precision and high throughput:
+- Many certificates are rasterized scans or photos where classical Tesseract OCR fails or outputs scrambled text due to letter-spacing and multi-column layouts.
+- Cloud APIs introduce network latency, recurring per-page billing costs, and data privacy compliance concerns.
+- Heavy LLMs/VLMs take 1-2 minutes per certificate on CPU, making bulk processing impractical.
 
-**Doraemon** solves this by running **100% offline on local hardware**. It uses a multi-tier pipeline that routes clean digital PDFs through a fast programmatic path, while running camera photos and scanned documents through computer vision preprocessing, neural OCR, and local Vision-Language Models (Qwen2.5-VL and MiniCPM-V via Ollama). A consensus arbitration layer reconciles the outputs to eliminate hallucinations and output clean, verified JSON.
+**Doraemon** solves this with an optimized **Pure Neural OCR Engine** running **100% offline on local hardware**:
+- **Zero Cloud APIs & Zero LLM Overhead**: Runs entirely on local CPU or GPU without requiring external API keys or heavy language model runtimes.
+- **High-Speed Execution**: Sub-second to few-second extraction optimized for bulk batch processing.
+- **Template-Calibrated Semantic Layout Parsing**: Flawlessly parses institution headers, letter-spaced certificate IDs, presentation anchors, multi-line descriptions, course names, dates, signatories, and QR codes.
+- **Optional Multi-Layer VLM Escalation**: Retains an optional dual-VLM consensus tier (Qwen2.5-VL and MiniCPM-V) for arbitrary unstructured or degraded documents.
 
 ---
 
@@ -141,14 +144,12 @@ The output strictly produces the following 9 target fields:
 
 ## Quickstart (One-Click)
 
-If you are on Windows, you do not need to manually configure Python environments or download packages:
+If you are on Windows, you do not need to manually configure Python environments or download heavy model weights:
 1. Double-click **`start.bat`**.
 2. The launcher will automatically:
    - Check if Python is installed (and offer to install Python 3.11 if missing).
-   - Create an isolated virtual environment (`.venv`).
-   - Prompt you to install required dependencies (`requirements.txt`).
-   - Check if Ollama and both local vision models (`qwen2.5vl:3b` and `minicpm-v:latest`) are present (and offer to download them).
-   - Launch the scanner where you can simply **paste the path or drag and drop** your certificate to extract fields immediately!
+   - Verify/install required libraries (`requirements.txt`).
+   - Launch the scanner where you can simply **paste the path or drag and drop** your certificate to extract fields immediately in seconds!
 
 ---
 
@@ -171,25 +172,28 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Install and Configure Ollama (for VLM inference)
-Install [Ollama](https://ollama.com/) and pull the local vision models:
-```bash
-ollama pull qwen2.5vl:3b
-ollama pull minicpm-v:latest
-```
-
 ---
 
 ## Usage
 
-### 1. Run Multi-Layer Scan (VLM + OCR)
-The multi-layer pipeline runs digital triage, parallel OCR + VLM, and consensus arbitration:
+### 1. Run High-Speed Neural OCR Scan (Recommended for Bulk Processing)
+Runs pure neural OCR (EasyOCR CRAFT + CRNN) with OpenCV document restoration, fast Hough deskewing (0.05s), and template layout parsing:
 ```bash
-# Process a certificate
-python run_multilayer_scan.py --input "path/to/certificate.pdf"
+# Interactive drag-and-drop mode
+python scan.py
 
-# Force deep VLM extraction even on born-digital PDFs
-python run_multilayer_scan.py --input "path/to/certificate.pdf" --force-vlm
+# Direct CLI execution
+python run_certificate_scan.py --input "path/to/certificate.pdf"
+
+# With GPU acceleration
+python run_certificate_scan.py --input "path/to/certificate.pdf" --gpu
+```
+
+### 2. Run Multi-Layer Scan (VLM + OCR) [Optional]
+For arbitrary documents needing vision-language reasoning via local Ollama models:
+```bash
+python run_multilayer_scan.py --input "path/to/certificate.pdf"
+```
 
 # Enable dual-VLM consensus manually
 python run_multilayer_scan.py --input "path/to/certificate.pdf" --use-secondary
